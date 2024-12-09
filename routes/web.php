@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\AffiliatesController;
+use App\Http\Controllers\ComissionsController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,7 +22,8 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return 'teste';
-    })->name('dashboard');
+    Route::get('/dashboard', HomeController::class)->name('dashboard');
+    Route::resource('users', UserController::class);
+    Route::resource('affiliates', AffiliatesController::class);
+    Route::resource('comissions', ComissionsController::class);
 });
