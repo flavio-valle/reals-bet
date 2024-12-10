@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Affiliate;
@@ -16,12 +17,12 @@ class AffiliatesController extends Controller
     }
 
     public function create()
-{
-    $states = State::orderBy('nome')->get();
-    return Inertia::render('Affiliates/Create', [
-        'states' => $states,
-    ]);
-}
+    {
+        $states = State::orderBy('nome')->get();
+        return Inertia::render('Affiliates/Create', [
+            'states' => $states,
+        ]);
+    }
 
     public function store(Request $request)
     {
@@ -41,22 +42,30 @@ class AffiliatesController extends Controller
         return redirect()->route('affiliates.index')->with('message', 'Afiliado criado com sucesso');
     }
 
-    public function edit(Affiliate $affiliate)
-{
+    public function show(Affiliate $affiliate)
+    {
+        return Inertia::render('Affiliates/Show', [
+            'affiliate' => $affiliate,
+        ]);
+    }
+    
 
-    return Inertia::render('Affiliates/Edit', [
-        'affiliate' => $affiliate,
-        'states' => State::orderBy('nome')->get(),
-    ]);
-}
+    public function edit(Affiliate $affiliate)
+    {
+
+        return Inertia::render('Affiliates/Edit', [
+            'affiliate' => $affiliate,
+            'states' => State::orderBy('nome')->get(),
+        ]);
+    }
 
     public function update(Request $request, Affiliate $affiliate)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'cpf' => 'required|string|unique:affiliates,cpf,'.$affiliate->id,
+            'cpf' => 'required|string|unique:affiliates,cpf,' . $affiliate->id,
             'birth_date' => 'required|date',
-            'email' => 'required|email|unique:affiliates,email,'.$affiliate->id,
+            'email' => 'required|email|unique:affiliates,email,' . $affiliate->id,
             'phone' => 'required|string',
             'address' => 'required|string',
             'state' => 'required|string',
