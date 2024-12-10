@@ -5,6 +5,18 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 const props = defineProps({
     comissions: Object,
 });
+
+// Função para formatar o valor como moeda
+const formatCurrency = (value) => {
+    const formatted = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    }).format(value);
+
+    return formatted;
+};
 </script>
 
 <template>
@@ -14,7 +26,6 @@ const props = defineProps({
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                     <div class="p-6 lg:p-8">
                         <div class="flex justify-between items-center mb-6">
-                            a
                             <h1 class="text-2xl text-gray-400 font-bold">Comissões</h1>
                             <Link :href="route('comissions.create')"
                                 class="bg-[#00E59C] text-white px-4 py-2 rounded hover:opacity-75">
@@ -54,8 +65,11 @@ const props = defineProps({
                                         class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
                                         {{ comission.affiliate.name }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                        {{ comission.value | currency }}
+                                    <td 
+                                        class="px-6 py-4 whitespace-nowrap text-sm"
+                                        :class="comission.value >= 0 ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'"
+                                    >
+                                        {{ formatCurrency(comission.value) }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
                                         {{ comission.date }}
@@ -77,9 +91,6 @@ const props = defineProps({
                                 </tr>
                             </tbody>
                         </table>
-
-                        <div class="mt-6">
-                        </div>
                     </div>
                 </div>
             </div>
