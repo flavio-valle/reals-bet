@@ -11,20 +11,18 @@ class AffiliateFactory extends Factory
 {
     /**
      * Define the model's default state.
-     *
-     * @return array<string, mixed>
      */
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name,
-            'cpf' => $this->faker->phoneNumber(),
-            'birth_date' => $this->faker->date,
-            'email' => $this->faker->email,
-            'phone' => $this->faker->phoneNumber,
-            'address' => $this->faker->address,
-            'city' => $this->faker->city,
-            'state' => $this->faker->state,
+            'name' => $this->faker->name(),
+            'cpf' => $this->faker->numerify('###.###.###-##'), // Gera um CPF formatado
+            'birth_date' => $this->faker->date('Y-m-d', '2003-12-31'), // Até 21 anos de idade
+            'email' => $this->faker->unique()->safeEmail(),
+            'phone' => $this->faker->phoneNumber(),
+            'address' => $this->faker->streetAddress(),
+            'city' => $this->faker->city(),
+            'state' => $this->faker->stateAbbr(), 
         ];
     }
 }
