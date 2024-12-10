@@ -2,64 +2,71 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comission;
+use App\Models\Affiliate;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ComissionsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return Inertia::render('Comissions/Index');
+        $comissions = Comission::with('affiliate')->paginate(10);
+
+        return Inertia::render('Comissions/Index', [
+            'comissions' => $comissions,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-    
+        $affiliates = Affiliate::all(['id', 'name']);
+        return Inertia::render('Comissions/Create', [
+            'affiliates' => $affiliates,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        
+        $request->validate([
+            'affiliate_id' => 'required|exists:affiliates,id',
+            'value' => 'required|numeric',
+            'date' => 'required|date',
+            'description' => 'nullable|string|max:255',
+        ]);
+
+        Comission::create($request->all());
+
+        return redirect()->route('comissions.index')->with('message', 'Comissão criada com sucesso.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(Comission $comission)
     {
-        //
+        $affiliates = Affiliate::all(['id', 'name']);
+        return Inertia::render('Comissions/Edit', [
+            'comission' => $comission,
+            'affiliates' => $affiliates,
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, Comission $comission)
     {
-        //
+        $request->validate([
+            'affiliate_id' => 'required|exists:affiliates,id',
+            'value' => 'required|numeric',
+            'date' => 'required|date',
+            'description' => 'nullable|string|max:255',
+        ]);
+
+        $comission->update($request->all());
+
+        return redirect()->route('comissions.index')->with('message', 'Comissão atualizada com sucesso.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(Comission $comission)
     {
-        //
-    }
+        $comission->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('comissions.index')->with('message', 'Comissão excluída com sucesso.');
     }
 }

@@ -1,65 +1,73 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Models\Affiliate;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class AffiliatesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return Inertia::render('Affiliates/Index');
+        return Inertia::render('Affiliates/Index', [
+            'affiliates' => Affiliate::all(),
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
-    {
-        //
-    }
+{
+    return Inertia::render('Affiliates/Create', [
+    ]);
+}
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'cpf' => 'required|string|unique:affiliates',
+            'birth_date' => 'required|date',
+            'email' => 'required|email|unique:affiliates',
+            'phone' => 'required|string',
+            'address' => 'required|string',
+            'state' => 'required|string',
+            'city' => 'required|string'
+        ]);
+
+        Affiliate::create($request->all());
+
+        return redirect()->route('affiliates.index')->with('message', 'Afiliado criado com sucesso');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(Affiliate $affiliate)
+{
+
+    return Inertia::render('Affiliates/Edit', [
+        'affiliate' => $affiliate,
+    ]);
+}
+
+    public function update(Request $request, Affiliate $affiliate)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'cpf' => 'required|string|unique:affiliates,cpf,'.$affiliate->id,
+            'birth_date' => 'required|date',
+            'email' => 'required|email|unique:affiliates,email,'.$affiliate->id,
+            'phone' => 'required|string',
+            'address' => 'required|string',
+            'state' => 'required|string',
+            'city' => 'required|string'
+        ]);
+
+        $affiliate->update($request->all());
+
+        return redirect()->route('affiliates.index')->with('message', 'Afiliado atualizado com sucesso');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function destroy(Affiliate $affiliate)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $affiliate->delete();
+        return redirect()->route('affiliates.index')->with('message', 'Afiliado inativado com sucesso');
     }
 }
