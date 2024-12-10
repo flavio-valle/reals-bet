@@ -64,7 +64,7 @@ const props = defineProps({
                                         {{ comission.description }}
                                     </td>
                                     <td
-                                        class="flex justify-evenly px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                        class="flex justify-between px-6 py-4 gap-5 whitespace-nowrap text-center text-sm font-medium">
                                         <Link :href="route('comissions.edit', comission.id)"
                                             class="text-[#00E59C] hover:opacity-75">
                                             Editar
