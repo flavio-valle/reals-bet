@@ -62,31 +62,31 @@ const submit = () => {
                         <form @submit.prevent="submit" class="space-y-6">
                             <div>
                                 <label class="block text-gray-500 dark:text-gray-300 text-sm font-medium mb-2">Nome</label>
-                                <input v-model="form.name" type="text" class="w-full border rounded p-2 text-gray-900 dark:text-gray-100" required />
+                                <input v-model="form.name" type="text" class="w-full border rounded p-2 text-gray-900 dark:text-gray-900" required />
                             </div>
                             <div>
                                 <label class="block text-gray-500 dark:text-gray-300 text-sm font-medium mb-2">CPF</label>
-                                <input v-model="form.cpf" type="text" class="w-full border rounded p-2 text-gray-900 dark:text-gray-100" required />
+                                <input v-model="form.cpf" type="text" class="w-full border rounded p-2 text-gray-900 dark:text-gray-900" required />
                             </div>
                             <div>
                                 <label class="block text-gray-500 dark:text-gray-300 text-sm font-medium mb-2">Data de Nascimento</label>
-                                <input v-model="form.birth_date" type="date" class="w-full border rounded p-2 text-gray-900 dark:text-gray-100" required />
+                                <input v-model="form.birth_date" type="date" class="w-full border rounded p-2 text-gray-900 dark:text-gray-900" required />
                             </div>
                             <div>
                                 <label class="block text-gray-500 dark:text-gray-300 text-sm font-medium mb-2">E-mail</label>
-                                <input v-model="form.email" type="email" class="w-full border rounded p-2 text-gray-900 dark:text-gray-100" required />
+                                <input v-model="form.email" type="email" class="w-full border rounded p-2 text-gray-900 dark:text-gray-900" required />
                             </div>
                             <div>
                                 <label class="block text-gray-500 dark:text-gray-300 text-sm font-medium mb-2">Telefone</label>
-                                <input v-model="form.phone" type="tel" class="w-full border rounded p-2 text-gray-900 dark:text-gray-100" required />
+                                <input v-model="form.phone" type="tel" class="w-full border rounded p-2 text-gray-900 dark:text-gray-900" required />
                             </div>
                             <div>
                                 <label class="block text-gray-500 dark:text-gray-300 text-sm font-medium mb-2">Endereço</label>
-                                <input v-model="form.address" type="text" class="w-full border rounded p-2 text-gray-900 dark:text-gray-100" required />
+                                <input v-model="form.address" type="text" class="w-full border rounded p-2 text-gray-900 dark:text-gray-900" required />
                             </div>
                             <div>
                                 <label class="block text-gray-500 dark:text-gray-300 text-sm font-medium mb-2">Estado</label>
-                                <select @change="updateState($event.target.value)" class="w-full border rounded p-2 text-gray-900 dark:text-gray-100" required>
+                                <select @change="updateState($event.target.value)" class="w-full border rounded p-2 text-gray-900 dark:text-gray-900" required>
                                     <option value="">Selecione um estado</option>
                                     <option v-for="state in states" :key="state.id" :value="state.id">
                                         {{ state.nome }}
@@ -95,7 +95,7 @@ const submit = () => {
                             </div>
                             <div>
                                 <label class="block text-gray-500 dark:text-gray-300 text-sm font-medium mb-2">Cidade</label>
-                                <select @change="updateCity($event.target.value)" class="w-full border rounded p-2 text-gray-900 dark:text-gray-100" :disabled="!form.state" required>
+                                <select @change="updateCity($event.target.value)" class="w-full border rounded p-2 text-gray-900 dark:text-gray-900" :disabled="!form.state" required>
                                     <option value="">Selecione uma cidade</option>
                                     <option v-for="city in cities" :key="city.id" :value="city.id">
                                         {{ city.name }}
