@@ -10,6 +10,7 @@ class Comission extends Model
         'affiliate_id',
         'value',
         'date',
+        'description',
     ];
 
     public function affiliate()
