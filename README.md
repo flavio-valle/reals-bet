@@ -1,4 +1,4 @@
-# 🚀 Documentação do Projeto Laravel Sail
+# 🚀 Documentação do Projeto Laravel - Reals Bet
 
 ## 🛠 Pré-requisitos
 
