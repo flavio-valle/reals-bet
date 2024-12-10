@@ -6,67 +6,92 @@ use App\Models\Comission;
 use App\Models\Affiliate;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Exception;
 
 class ComissionsController extends Controller
 {
     public function index()
     {
-        $comissions = Comission::with('affiliate')->paginate(10);
+        try {
+            $comissions = Comission::with('affiliate')->paginate(10);
 
-        return Inertia::render('Comissions/Index', [
-            'comissions' => $comissions,
-        ]);
+            return Inertia::render('Comissions/Index', [
+                'comissions' => $comissions,
+            ]);
+        } catch (Exception $e) {
+            return redirect()->route('comissions.index')->with('error', 'Erro ao carregar comissões.');
+        }
     }
 
     public function create()
     {
-        $affiliates = Affiliate::all(['id', 'name']);
-        return Inertia::render('Comissions/Create', [
-            'affiliates' => $affiliates,
-        ]);
+        try {
+            $affiliates = Affiliate::all(['id', 'name']);
+            return Inertia::render('Comissions/Create', [
+                'affiliates' => $affiliates,
+            ]);
+        } catch (Exception $e) {
+            return redirect()->route('comissions.index')->with('error', 'Erro ao carregar dados para criação de comissão.');
+        }
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'affiliate_id' => 'required|exists:affiliates,id',
-            'value' => 'required|numeric',
-            'date' => 'required|date',
-            'description' => 'nullable|string|max:255',
-        ]);
+        try {
+            $request->validate([
+                'affiliate_id' => 'required|exists:affiliates,id',
+                'value' => 'required|numeric',
+                'date' => 'required|date',
+                'description' => 'nullable|string|max:255',
+            ]);
 
-        Comission::create($request->all());
+            Comission::create($request->all());
 
-        return redirect()->route('comissions.index')->with('message', 'Comissão criada com sucesso.');
+            return redirect()->route('comissions.index')->with('message', 'Comissão criada com sucesso.');
+        } catch (Exception $e) {
+            return redirect()->route('comissions.index')->with('error', 'Erro ao criar comissão.');
+        }
     }
 
     public function edit(Comission $comission)
     {
-        $affiliates = Affiliate::all(['id', 'name']);
-        return Inertia::render('Comissions/Edit', [
-            'comission' => $comission,
-            'affiliates' => $affiliates,
-        ]);
+        try {
+            $affiliates = Affiliate::all(['id', 'name']);
+            return Inertia::render('Comissions/Edit', [
+                'comission' => $comission,
+                'affiliates' => $affiliates,
+            ]);
+        } catch (Exception $e) {
+            return redirect()->route('comissions.index')->with('error', 'Erro ao carregar dados para edição de comissão.');
+        }
     }
 
     public function update(Request $request, Comission $comission)
     {
-        $request->validate([
-            'affiliate_id' => 'required|exists:affiliates,id',
-            'value' => 'required|numeric',
-            'date' => 'required|date',
-            'description' => 'nullable|string|max:255',
-        ]);
+        try {
+            $request->validate([
+                'affiliate_id' => 'required|exists:affiliates,id',
+                'value' => 'required|numeric',
+                'date' => 'required|date',
+                'description' => 'nullable|string|max:255',
+            ]);
 
-        $comission->update($request->all());
+            $comission->update($request->all());
 
-        return redirect()->route('comissions.index')->with('message', 'Comissão atualizada com sucesso.');
+            return redirect()->route('comissions.index')->with('message', 'Comissão atualizada com sucesso.');
+        } catch (Exception $e) {
+            return redirect()->route('comissions.index')->with('error', 'Erro ao atualizar comissão.');
+        }
     }
 
     public function destroy(Comission $comission)
     {
-        $comission->delete();
+        try {
+            $comission->delete();
 
-        return redirect()->route('comissions.index')->with('message', 'Comissão excluída com sucesso.');
+            return redirect()->route('comissions.index')->with('message', 'Comissão excluída com sucesso.');
+        } catch (Exception $e) {
+            return redirect()->route('comissions.index')->with('error', 'Erro ao excluir comissão.');
+        }
     }
 }
