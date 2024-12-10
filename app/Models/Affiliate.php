@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Affiliate extends Model
 {
 
-    
     /** @use HasFactory<\Database\Factories\AffiliateFactory> */
     use HasFactory;
 
@@ -20,5 +19,6 @@ class Affiliate extends Model
         'phone',
         'address',
         'city',
+        'state',
     ];
 }
