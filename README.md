@@ -114,7 +114,5 @@ O arquivo `package.json` contém as dependências JavaScript e scripts para dese
 
 - **Autenticação com Jetstream**: Login, registro e recuperação de senha.
 - **Integração Vue.js com Inertia.js**: Navegação fluida e moderna.
-- **Fila de Jobs**: Configurada para executar tarefas assíncronas.
-- **Tradução em PT-BR**: Todo o sistema traduzido para português brasileiro.
 
 Para mais informações, consulte a documentação oficial do Laravel ou entre em contato com o time de desenvolvimento.
