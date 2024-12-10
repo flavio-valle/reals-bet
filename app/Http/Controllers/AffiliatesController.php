@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Affiliate;
+use App\Models\State;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -16,13 +17,14 @@ class AffiliatesController extends Controller
 
     public function create()
 {
+    $states = State::orderBy('nome')->get();
     return Inertia::render('Affiliates/Create', [
+        'states' => $states,
     ]);
 }
 
     public function store(Request $request)
     {
-        dd($request->all());
         $request->validate([
             'name' => 'required|string|max:255',
             'cpf' => 'required|string|unique:affiliates',
@@ -44,6 +46,7 @@ class AffiliatesController extends Controller
 
     return Inertia::render('Affiliates/Edit', [
         'affiliate' => $affiliate,
+        'states' => State::orderBy('nome')->get(),
     ]);
 }
 

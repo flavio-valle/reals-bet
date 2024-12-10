@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useForm } from '@inertiajs/vue3'
 import axios from 'axios'
 import AppLayout from '@/Layouts/AppLayout.vue'
@@ -17,29 +17,40 @@ const form = useForm({
     email: '',
     phone: '',
     address: '',
-    state_id: '',
-    city_id: ''
+    state: '',
+    city: ''
 })
 
 const loadCities = async (stateId) => {
     if (!stateId) {
-        cities.value = []
-        return
+        cities.value = [];
+        return;
     }
 
     try {
-        const response = await axios.get(route('get.cities', stateId))
-        cities.value = response.data
+        const response = await axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${stateId}/municipios`);
+        cities.value = response.data.map(city => ({ id: city.id, name: city.nome }));
     } catch (error) {
-        console.error('Error loading cities:', error)
-        cities.value = []
+        console.error('Erro ao carregar cidades:', error);
     }
-}
+};
+
+const updateState = (stateId) => {
+    const selectedState = props.states.find(state => state.id == stateId);
+    form.state = selectedState ? selectedState.nome : '';
+    loadCities(stateId);
+};
+
+const updateCity = (cityId) => {
+    const selectedCity = cities.value.find(city => city.id == cityId);
+    form.city = selectedCity ? selectedCity.name : '';
+};
 
 const submit = () => {
     form.post(route('affiliates.store'))
 }
 </script>
+
 
 <template>
     <AppLayout title="Novo Afiliado">
@@ -72,18 +83,16 @@ const submit = () => {
                 </div>
                 <div class="mb-4">
                     <label class="block mb-2">Estado</label>
-                    <select v-model="form.state_id" @change="loadCities(form.state_id)"
-                        class="w-full border p-2 rounded" required>
+                    <select @change="updateState($event.target.value)" class="w-full border p-2 rounded" required>
                         <option value="">Selecione um estado</option>
                         <option v-for="state in states" :key="state.id" :value="state.id">
-                            {{ state.name }}
+                            {{ state.nome }}
                         </option>
                     </select>
                 </div>
                 <div class="mb-4">
                     <label class="block mb-2">Cidade</label>
-                    <select v-model="form.city_id" class="w-full border p-2 rounded" :disabled="!form.state_id"
-                        required>
+                    <select @change="updateCity($event.target.value)" class="w-full border p-2 rounded" :disabled="!form.state" required>
                         <option value="">Selecione uma cidade</option>
                         <option v-for="city in cities" :key="city.id" :value="city.id">
                             {{ city.name }}

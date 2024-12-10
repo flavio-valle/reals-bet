@@ -18,25 +18,23 @@ const form = useForm({
     phone: props.affiliate.phone,
     address: props.affiliate.address,
     state_id: props.affiliate.state_id,
-    city_id: props.affiliate.city_id
 })
 
 const availableCities = ref(props.cities)
 
 const loadCities = async () => {
     if (!form.state_id) {
-        availableCities.value = []
-        return
+        availableCities.value = [];
+        return;
     }
 
     try {
-        const response = await axios.get(route('get.cities', form.state_id))
-        availableCities.value = response.data
+        const response = await axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${form.state_id}/municipios`);
+        availableCities.value = response.data.map(city => ({ id: city.id, name: city.nome }));
     } catch (error) {
-        console.error('Error loading cities:', error)
-        availableCities.value = []
+        console.error('Erro ao carregar cidades:', error);
     }
-}
+};
 
 watch(() => form.state_id, () => {
     form.city_id = ''
