@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('affiliate_id')->constrained();
             $table->decimal('value', 10, 2);
             $table->date('date');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
